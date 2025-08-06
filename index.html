@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quantis Launch (QTX)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- QTX LOGO -->
+  <div class="logo-container" style="text-align: center; margin-top: 30px;">
+    <img src="IMG_4337.jpeg" alt="QTX Logo" width="140" />
+  </div>
+
+  <h1 style="text-align: center;">QTX Token Launch</h1>
+
+  <!-- CONNECT WALLET -->
+  <div style="text-align: center; margin: 20px;">
+    <button id="connectWallet" style="padding: 12px 24px; font-size: 16px;">Connect Phantom Wallet</button>
+  </div>
+
+  <!-- DEPLOY TOKEN -->
+  <div style="text-align: center; margin: 20px;">
+    <button id="deployToken" style="padding: 12px 24px; font-size: 16px;" disabled>Deploy QTX Token</button>
+  </div>
+
+  <!-- STATUS OUTPUT -->
+  <div id="status" style="text-align: center; font-family: monospace; color: green;"></div>
+
+  <!-- ✅ Solana + SPL Token Libraries -->
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.js"></script>
+
+  <!-- ✅ Deployment Logic -->
+  <script src="main.js" type="module"></script>
+</body>
+</html>
