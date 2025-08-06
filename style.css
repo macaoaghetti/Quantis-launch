@@ -1,0 +1,35 @@
+body {
+  background-color: #0a0a0a;
+  color: #00ff99;
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: #00ff99;
+  color: black;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  margin: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#status {
+  margin-top: 20px;
+  font-size: 16px;
+}
