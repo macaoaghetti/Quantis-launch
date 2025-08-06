@@ -1,0 +1,24 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #0e0e0e;
+  color: #fff;
+  text-align: center;
+  padding: 50px;
+}
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+button {
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 16px;
+  background: #00ffe0;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+#status {
+  margin-top: 20px;
+}
