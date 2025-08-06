@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>QTX Token Launch</title>
+  <link rel="stylesheet" href="./style.css" />
+
+  <!-- ✅ FIXED SPL Token import (working CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@solana/spl-token@0.3.5/lib/index.iife.min.js"></script>
+
+  <!-- ✅ Solana Web3 (unchanged) -->
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- ✅ Local logo -->
+    <img src="./qtx-logo.png" alt="QTX Logo" class="logo" />
+    <h1>QTX Token Launch</h1>
+
+    <!-- ✅ Wallet connection -->
+    <button id="connectWallet">Connect Wallet</button>
+    <button id="deployToken" disabled>Deploy QTX Token</button>
+
+    <!-- ✅ Status messages -->
+    <div id="status"></div>
+  </div>
+
+  <!-- ✅ Your JS logic -->
+  <script src="./main.js"></script>
+</body>
+</html>
