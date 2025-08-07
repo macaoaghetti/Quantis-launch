@@ -1,5 +1,5 @@
-// ✅ QTX Token Launch - main.js (Final Fixed Version)
-import { Connection, clusterApiUrl, Keypair, PublicKey } from "https://cdn.skypack.dev/@solana/web3.js";
+// ✅ QTX Token Launch - main.js (Final Fixed & Clean)
+import { Connection, clusterApiUrl, PublicKey } from "https://cdn.skypack.dev/@solana/web3.js";
 import {
   createMint,
   getOrCreateAssociatedTokenAccount,
@@ -13,8 +13,8 @@ const statusDiv = document.getElementById("status");
 let wallet = null;
 let provider = null;
 
-const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC"; // Your wallet
-const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9; // 1 Billion QTX with 9 decimals
+const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC"; // Founder wallet
+const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9; // 1 billion QTX with 9 decimals
 
 window.addEventListener("DOMContentLoaded", async () => {
   if (window.solana && window.solana.isPhantom) {
@@ -27,7 +27,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         connectButton.innerText = "Connected: " + wallet.slice(0, 6) + "...";
         connectButton.disabled = true;
         deployButton.disabled = false;
-        log("✅ Wallet connected");
+        log("✅ Wallet connected: " + wallet);
       } catch (err) {
         log("❌ Wallet connection failed: " + err.message);
       }
@@ -36,7 +36,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     deployButton.addEventListener("click", async () => {
       try {
         const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
-        const payer = provider;
 
         const mint = await createMint(
           connection,
@@ -62,7 +61,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           TOTAL_SUPPLY
         );
 
-        log(`✅ QTX Token Deployed: ${mint.toString()}`);
+        log(`✅ QTX Token Deployed Successfully: ${mint.toString()}`);
       } catch (err) {
         log("❌ Deployment failed: " + err.message);
         console.error(err);
