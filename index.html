@@ -1,30 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>QTX Token Launch</title>
-  <link rel="stylesheet" href="style.css" />
+body {
+  background-color: #0a0a0a;
+  color: #00ff99;
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
 
-  <!-- ✅ Solana Web3 -->
-  <script src="https://unpkg.com/@solana/web3.js@1.73.2/lib/index.iife.min.js"></script>
+.container {
+  text-align: center;
+}
 
-  <!-- ✅ SPL Token module via Skypack -->
-  <script type="module">
-    import * as splToken from 'https://cdn.skypack.dev/@solana/spl-token';
-    window.splToken = splToken;
-  </script>
-</head>
-<body>
-  <div class="container">
-    <!-- ✅ Local image must be saved as exactly: qtx-logo.png -->
-    <img src="qtx-logo.png" alt="QTX Logo" class="logo" />
-    <h1>QTX Token Launch</h1>
-    <button id="connectWallet">Connect Wallet</button>
-    <button id="deployToken" disabled>Deploy QTX Token</button>
-    <div id="status"></div>
-  </div>
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
 
-  <!-- ✅ main.js must be marked as module -->
-  <script src="main.js" type="module"></script>
-</body>
-</html>
+button {
+  background-color: #00ff99;
+  color: black;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  margin: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#status {
+  margin-top: 20px;
+  font-size: 16px;
+}
