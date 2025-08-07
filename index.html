@@ -23,3 +23,87 @@
   <script type="module" src="main.js"></script>
 </body>
 </html>
+<script type="module">
+  import {
+    Connection,
+    clusterApiUrl,
+    PublicKey
+  } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/lib/index.iife.min.js";
+
+  import {
+    createMint,
+    getOrCreateAssociatedTokenAccount,
+    mintTo
+  } from "https://cdn.jsdelivr.net/npm/@solana/spl-token@0.3.5/lib/index.iife.min.js";
+
+  const connectButton = document.getElementById("connectWallet");
+  const deployButton = document.getElementById("deployToken");
+  const statusDiv = document.getElementById("status");
+
+  let provider = null;
+  let wallet = null;
+
+  const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC";
+  const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9;
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    if (window.solana && window.solana.isPhantom) {
+      console.log("✅ Phantom detected");
+      provider = window.solana;
+
+      connectButton.addEventListener("click", async () => {
+        try {
+          const resp = await provider.connect();
+          wallet = resp.publicKey.toString();
+          connectButton.innerText = "Connected: " + wallet.slice(0, 6) + "...";
+          connectButton.disabled = true;
+          deployButton.disabled = false;
+          log("✅ Wallet connected");
+        } catch (err) {
+          log("❌ Wallet connection failed: " + err.message);
+        }
+      });
+
+      deployButton.addEventListener("click", async () => {
+        try {
+          const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+
+          const mint = await createMint(
+            connection,
+            provider,
+            provider.publicKey,
+            null,
+            9
+          );
+
+          const founderTokenAccount = await getOrCreateAssociatedTokenAccount(
+            connection,
+            provider,
+            mint,
+            new PublicKey(FOUNDER_ADDRESS)
+          );
+
+          await mintTo(
+            connection,
+            provider,
+            mint,
+            founderTokenAccount.address,
+            provider.publicKey,
+            TOTAL_SUPPLY
+          );
+
+          log(`✅ QTX Token Deployed: ${mint.toString()}`);
+        } catch (err) {
+          log("❌ Deployment failed: " + err.message);
+          console.error(err);
+        }
+      });
+    } else {
+      log("❌ Phantom wallet not detected");
+    }
+  });
+
+  function log(msg) {
+    statusDiv.innerText = msg;
+  }
+</script>
