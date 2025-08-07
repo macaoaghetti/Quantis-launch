@@ -10,113 +10,12 @@
   <div class="container">
     <img src="qtx-logo.png" alt="QTX Logo" class="logo" />
     <h1>Quantis (QTX) Token Launch</h1>
-    <p>Deploy QTX on Solana Mainnet</p>
+    <p>Deploy QTX to Solana Mainnet</p>
     <button id="connectWallet">Connect Phantom Wallet</button>
     <button id="deployToken" disabled>Deploy QTX Token</button>
     <div id="status" class="status">Status: Waiting for wallet connection...</div>
   </div>
 
-  <!-- ✅ FINAL SCRIPT WITH ESM FIX -->
-  <script type="module">
-    import {
-      Connection,
-      clusterApiUrl,
-      PublicKey
-    } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/+esm";
-
-    import {
-      createMint,
-      getOrCreateAssociatedTokenAccount,
-      mintTo
-    } from "https://cdn.jsdelivr.net/npm/@solana/spl-token@0.3.5/+esm";
-
-    const connectButton = document.getElementById("connectWallet");
-    const deployButton = document.getElementById("deployToken");
-    const statusDiv = document.getElementById("status");
-
-    const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC";
-    const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9;
-    const FOUNDER_SUPPLY = TOTAL_SUPPLY * 0.15;
-
-    let provider = null;
-    let wallet = null;
-
-    window.addEventListener("DOMContentLoaded", async () => {
-      if (window.solana && window.solana.isPhantom) {
-        provider = window.solana;
-        log("✅ Phantom detected");
-
-        connectButton.addEventListener("click", async () => {
-          try {
-            const resp = await provider.connect();
-            wallet = resp.publicKey.toString();
-            connectButton.innerText = "Connected: " + wallet.slice(0, 6) + "...";
-            connectButton.disabled = true;
-            deployButton.disabled = false;
-            log("✅ Wallet connected: " + wallet);
-          } catch (err) {
-            log("❌ Wallet connection failed: " + err.message);
-          }
-        });
-
-        deployButton.addEventListener("click", async () => {
-          try {
-            const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
-
-            // ✅ Create Mint
-            const mint = await createMint(
-              connection,
-              {
-                publicKey: provider.publicKey,
-                signTransaction: provider.signTransaction,
-                signAllTransactions: provider.signAllTransactions
-              },
-              provider.publicKey,
-              null,
-              9
-            );
-
-            // ✅ Get or create token account for founder
-            const founderAccount = await getOrCreateAssociatedTokenAccount(
-              connection,
-              {
-                publicKey: provider.publicKey,
-                signTransaction: provider.signTransaction,
-                signAllTransactions: provider.signAllTransactions
-              },
-              mint,
-              new PublicKey(FOUNDER_ADDRESS)
-            );
-
-            // ✅ Mint 15% to founder
-            await mintTo(
-              connection,
-              {
-                publicKey: provider.publicKey,
-                signTransaction: provider.signTransaction,
-                signAllTransactions: provider.signAllTransactions
-              },
-              mint,
-              founderAccount.address,
-              provider.publicKey,
-              FOUNDER_SUPPLY
-            );
-
-            log(`✅ QTX Token Deployed!\nMint Address: ${mint.toString()}`);
-          } catch (err) {
-            log("❌ Deployment failed: " + err.message);
-            console.error(err);
-          }
-        });
-      } else {
-        log("❌ Phantom Wallet not detected. Install Phantom.");
-      }
-    });
-
-    function log(message) {
-      statusDiv.innerText = message;
-      console.log(message);
-    }
-  </script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
