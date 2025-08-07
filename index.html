@@ -1,9 +1,8 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quantis (QTX) Launch</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -12,11 +11,12 @@
     <img src="qtx-logo.png" alt="QTX Logo" class="logo" />
     <h1>Quantis (QTX) Token Launch</h1>
     <p>Deploy QTX on Solana Mainnet</p>
-    <button id="connectWallet">Connect Phantom Wallet</button>
+    <button id="connectWallet" disabled>Connect Phantom Wallet</button>
     <button id="deployToken" disabled>Deploy QTX Token</button>
-    <div id="status" class="status">Status: Waiting for wallet connection...</div>
+    <div id="status" class="status">Status: loading…</div>
   </div>
 
-  <script type="module" src="main.js"></script>
+  <!-- Load your script after DOM parse -->
+  <script type="module" src="main.js" defer></script>
 </body>
 </html>
