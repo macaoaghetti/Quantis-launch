@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>QTX Token Launch</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- ✅ Solana Web3 -->
+  <script src="https://unpkg.com/@solana/web3.js@1.73.2/lib/index.iife.min.js"></script>
+  <!-- ✅ SPL Token (module) -->
+  <script type="module">
+    import * as splToken from 'https://cdn.skypack.dev/@solana/spl-token';
+    window.splToken = splToken;
+  </script>
+</head>
+<body>
+  <div class="container">
+    <!-- ✅ Embedded QTX Logo -->
+    <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5R..." alt="QTX Logo"/>
+    <h1>QTX Token Launch</h1>
+    <button id="connectWallet">Connect Wallet</button>
+    <button id="deployToken" disabled>Deploy QTX Token</button>
+    <div id="status"></div>
+  </div>
+  <!-- ✅ Final JS Module -->
+  <script src="main.js" type="module"></script>
+</body>
+</html>
