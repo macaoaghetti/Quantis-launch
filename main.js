@@ -1,11 +1,11 @@
-const splToken = window.splToken;
-const solanaWeb3 = window.solanaWeb3;
-
 document.addEventListener("DOMContentLoaded", async function () {
+  const splToken = window.splToken;
+  const solanaWeb3 = window.solanaWeb3;
   const connectButton = document.getElementById("connectWallet");
   const deployButton = document.getElementById("deployToken");
   const statusDiv = document.getElementById("status");
-  const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9; // 1B tokens, 9 decimals
+
+  const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9;
 
   if (!window.solana || !window.solana.isPhantom) {
     alert("Phantom wallet not found. Please install it.");
@@ -33,45 +33,4 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       const connection = new solanaWeb3.Connection(
         solanaWeb3.clusterApiUrl("mainnet-beta"),
-        "confirmed"
-      );
-
-      const walletPubKey = provider.publicKey;
-
-      const payer = {
-        publicKey: walletPubKey,
-        signTransaction: provider.signTransaction.bind(provider),
-        signAllTransactions: provider.signAllTransactions.bind(provider),
-      };
-
-      const mint = await splToken.createMint(
-        connection,
-        payer,
-        walletPubKey,
-        null,
-        9
-      );
-
-      const tokenAccount = await splToken.getOrCreateAssociatedTokenAccount(
-        connection,
-        payer,
-        mint,
-        walletPubKey
-      );
-
-      await splToken.mintTo(
-        connection,
-        payer,
-        mint,
-        tokenAccount.address,
-        walletPubKey,
-        TOTAL_SUPPLY
-      );
-
-      statusDiv.innerText = "✅ QTX Token Deployed: " + mint.toBase58();
-    } catch (err) {
-      console.error("Deployment failed:", err);
-      statusDiv.innerText = "❌ Deployment failed. Check console.";
-    }
-  });
-});
+        "confirmed
