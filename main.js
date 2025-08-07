@@ -47,17 +47,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
   connectBtn.addEventListener("click", async () => {
     try {
-      // ask Phantom to connect
+      // open Phantom connection dialog
       await provider.connect();
 
-      // after connect(), provider.publicKey is populated
+      // now provider.publicKey is set
       walletPubkey = provider.publicKey;
-
       const shortKey = walletPubkey.toString().slice(0, 6) + "...";
-      connectBtn.innerText = "🔒 " + shortKey;
-      connectBtn.disabled = true;
-      deployBtn.disabled  = false;
-      statusDiv.innerText  = "Status: Wallet connected";
+
+      connectBtn.innerText   = "🔒 " + shortKey;
+      connectBtn.disabled    = true;
+      deployBtn.disabled     = false;
+      statusDiv.innerText    = "Status: Wallet connected";
     } catch (err) {
       statusDiv.innerText = "❌ Connect failed: " + err.message;
     }
@@ -78,10 +78,10 @@ window.addEventListener("DOMContentLoaded", () => {
       // 1) create the mint
       const mint = await createMint(
         conn,
-        provider,       // payer
-        walletPubkey,   // mint authority
-        null,           // freeze authority
-        9               // decimals
+        provider,
+        walletPubkey,
+        null,
+        9
       );
 
       // 2) get or create the founder's ATA
@@ -92,7 +92,7 @@ window.addEventListener("DOMContentLoaded", () => {
         new PublicKey(FOUNDER_ADDRESS)
       );
 
-      // 3) mint the founder allocation
+      // 3) mint founder supply
       await mintTo(
         conn,
         provider,
