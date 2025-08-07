@@ -1,11 +1,11 @@
-// Use unpkg’s module builds so import() works in the browser:
-import { Connection, clusterApiUrl, PublicKey } from 
-  "https://unpkg.com/@solana/web3.js@1.73.3?module";
+// main.js
+import { Connection, clusterApiUrl, PublicKey }
+  from "https://esm.sh/@solana/web3.js@1.73.3";
 import {
   createMint,
   getOrCreateAssociatedTokenAccount,
   mintTo
-} from "https://unpkg.com/@solana/spl-token@0.3.5?module";
+} from "https://esm.sh/@solana/spl-token@0.3.5";
 
 const connectBtn = document.getElementById("connectWallet");
 const deployBtn  = document.getElementById("deployToken");
@@ -17,7 +17,7 @@ const FOUNDER_SUPPLY  = Math.floor(TOTAL_SUPPLY * 0.15);
 
 let provider, walletPubkey;
 
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", () => {
   statusDiv.innerText = "Status: checking Phantom…";
   if (window.solana?.isPhantom) {
     provider = window.solana;
@@ -41,34 +41,11 @@ window.addEventListener("DOMContentLoaded", async () => {
       statusDiv.innerText = "Status: deploying token…";
       try {
         const conn = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
-
-        // 1) create the mint
-        const mint = await createMint(
-          conn,
-          provider,          // payer
-          walletPubkey,      // mint authority
-          null,              // freeze authority
-          9                  // decimals
-        );
-
-        // 2) get founder ATA
+        const mint = await createMint(conn, provider, walletPubkey, null, 9);
         const ata  = await getOrCreateAssociatedTokenAccount(
-          conn,
-          provider,
-          mint,
-          new PublicKey(FOUNDER_ADDRESS)
+          conn, provider, mint, new PublicKey(FOUNDER_ADDRESS)
         );
-
-        // 3) mint 15% to founder
-        await mintTo(
-          conn,
-          provider,
-          mint,
-          ata.address,
-          walletPubkey,
-          FOUNDER_SUPPLY
-        );
-
+        await mintTo(conn, provider, mint, ata.address, walletPubkey, FOUNDER_SUPPLY);
         statusDiv.innerText = "✅ Deployed! Mint: " + mint.toString();
       } catch (err) {
         statusDiv.innerText = "❌ Deploy failed: " + err.message;
