@@ -11,20 +11,19 @@
     <img src="qtx-logo.png" alt="QTX Logo" class="logo" />
     <h1>Quantis (QTX) Token Launch</h1>
     <p>Deploy QTX on Solana Mainnet</p>
+
     <button id="connectWallet">Connect Phantom Wallet</button>
     <button id="deployToken" disabled>Deploy QTX Token</button>
     <div id="status" class="status">Status: Waiting for wallet connection...</div>
   </div>
 
-  <!-- ✅ LIVE FUNCTIONAL SCRIPT -->
+  <!-- ✅ LIVE SCRIPT -->
   <script type="module">
     import {
       Connection,
       clusterApiUrl,
-      PublicKey,
-      Keypair,
-      sendAndConfirmTransaction
-    } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/lib/index.iife.js";
+      PublicKey
+    } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/lib/index.iife.min.js";
 
     import {
       createMint,
@@ -45,10 +44,11 @@
     window.addEventListener("DOMContentLoaded", async () => {
       if (window.solana && window.solana.isPhantom) {
         provider = window.solana;
+        log("✅ Phantom detected");
 
         connectButton.addEventListener("click", async () => {
           try {
-            const resp = await provider.connect();
+            const resp = await provider.connect({ onlyIfTrusted: false });
             wallet = resp.publicKey.toString();
             connectButton.innerText = "Connected: " + wallet.slice(0, 6) + "...";
             connectButton.disabled = true;
@@ -65,10 +65,10 @@
 
             const mint = await createMint(
               connection,
-              provider, // payer
-              provider.publicKey, // mint authority
-              null, // freeze authority
-              9 // decimals
+              provider,
+              provider.publicKey,
+              null,
+              9
             );
 
             const founderTokenAccount = await getOrCreateAssociatedTokenAccount(
@@ -94,12 +94,13 @@
           }
         });
       } else {
-        log("❌ Phantom Wallet not detected. Please install Phantom.");
+        log("❌ Phantom Wallet not detected. Install Phantom to continue.");
       }
     });
 
     function log(message) {
       statusDiv.innerText = message;
+      console.log(message);
     }
   </script>
 </body>
