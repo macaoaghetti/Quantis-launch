@@ -1,75 +1,81 @@
-// main.js
-import { Connection, clusterApiUrl, PublicKey } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/+esm";
-import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "https://cdn.jsdelivr.net/npm/@solana/spl-token@0.3.5/+esm";
+// Use unpkg’s module builds so import() works in the browser:
+import { Connection, clusterApiUrl, PublicKey } from 
+  "https://unpkg.com/@solana/web3.js@1.73.3?module";
+import {
+  createMint,
+  getOrCreateAssociatedTokenAccount,
+  mintTo
+} from "https://unpkg.com/@solana/spl-token@0.3.5?module";
 
-const connectButton = document.getElementById("connectWallet");
-const deployButton  = document.getElementById("deployToken");
-const statusDiv     = document.getElementById("status");
+const connectBtn = document.getElementById("connectWallet");
+const deployBtn  = document.getElementById("deployToken");
+const statusDiv  = document.getElementById("status");
 
 const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC";
-const TOTAL_SUPPLY    = 1_000_000_000 * 10 ** 9;    // 1B tokens (9 decimals)
-const FOUNDER_SUPPLY  = Math.floor(TOTAL_SUPPLY * 0.15); // 15% to founder
+const TOTAL_SUPPLY    = 1_000_000_000 * 10 ** 9;
+const FOUNDER_SUPPLY  = Math.floor(TOTAL_SUPPLY * 0.15);
 
-let provider = null;
+let provider, walletPubkey;
 
-window.addEventListener("DOMContentLoaded", () => {
-  if (window.solana && window.solana.isPhantom) {
+window.addEventListener("DOMContentLoaded", async () => {
+  statusDiv.innerText = "Status: checking Phantom…";
+  if (window.solana?.isPhantom) {
     provider = window.solana;
-    log("✅ Phantom detected");
+    statusDiv.innerText = "Status: Phantom detected";
+    connectBtn.disabled = false;
 
-    connectButton.addEventListener("click", async () => {
+    connectBtn.addEventListener("click", async () => {
       try {
         const resp = await provider.connect();
-        const walletPub = resp.publicKey.toString();
-        connectButton.innerText = `Connected: ${walletPub.slice(0,6)}...`;
-        connectButton.disabled = true;
-        deployButton.disabled = false;
-        log(`✅ Wallet connected: ${walletPub}`);
+        walletPubkey = resp.publicKey;
+        connectBtn.innerText = "🔒 " + walletPubkey.toString().slice(0,6) + "...";
+        connectBtn.disabled = true;
+        deployBtn.disabled = false;
+        statusDiv.innerText = "Status: Wallet connected";
       } catch (err) {
-        log(`❌ Connection failed: ${err.message}`);
+        statusDiv.innerText = "❌ Connect failed: " + err.message;
       }
     });
 
-    deployButton.addEventListener("click", async () => {
+    deployBtn.addEventListener("click", async () => {
+      statusDiv.innerText = "Status: deploying token…";
       try {
-        const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+        const conn = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
 
+        // 1) create the mint
         const mint = await createMint(
-          connection,
-          provider,
-          provider.publicKey,
-          null,
-          9
+          conn,
+          provider,          // payer
+          walletPubkey,      // mint authority
+          null,              // freeze authority
+          9                  // decimals
         );
 
-        const founderATA = await getOrCreateAssociatedTokenAccount(
-          connection,
+        // 2) get founder ATA
+        const ata  = await getOrCreateAssociatedTokenAccount(
+          conn,
           provider,
           mint,
           new PublicKey(FOUNDER_ADDRESS)
         );
 
+        // 3) mint 15% to founder
         await mintTo(
-          connection,
+          conn,
           provider,
           mint,
-          founderATA.address,
-          provider.publicKey,
+          ata.address,
+          walletPubkey,
           FOUNDER_SUPPLY
         );
 
-        log(`✅ QTX Deployed! Mint: ${mint.toString()}`);
+        statusDiv.innerText = "✅ Deployed! Mint: " + mint.toString();
       } catch (err) {
-        log(`❌ Deployment failed: ${err.message}`);
-        console.error(err);
+        statusDiv.innerText = "❌ Deploy failed: " + err.message;
       }
     });
+
   } else {
-    log("❌ Phantom not detected. Please install Phantom.");
+    statusDiv.innerText = "❌ Phantom not found. Install Phantom Extension.";
   }
 });
-
-function log(message) {
-  statusDiv.innerText = message;
-  console.log(message);
-}
