@@ -11,13 +11,12 @@
     <img src="qtx-logo.png" alt="QTX Logo" class="logo" />
     <h1>Quantis (QTX) Token Launch</h1>
     <p>Deploy QTX on Solana Mainnet</p>
-
     <button id="connectWallet">Connect Phantom Wallet</button>
     <button id="deployToken" disabled>Deploy QTX Token</button>
     <div id="status" class="status">Status: Waiting for wallet connection...</div>
   </div>
 
-  <!-- ✅ LIVE SCRIPT -->
+  <!-- ✅ LIVE DEPLOYMENT SCRIPT -->
   <script type="module">
     import {
       Connection,
@@ -39,7 +38,8 @@
     let wallet = null;
 
     const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC";
-    const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9; // 1B tokens, 9 decimals
+    const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9;
+    const FOUNDER_SUPPLY = TOTAL_SUPPLY * 0.15; // 15% to founder
 
     window.addEventListener("DOMContentLoaded", async () => {
       if (window.solana && window.solana.isPhantom) {
@@ -84,7 +84,7 @@
               mint,
               founderTokenAccount.address,
               provider.publicKey,
-              TOTAL_SUPPLY
+              FOUNDER_SUPPLY
             );
 
             log(`✅ QTX Token Deployed!\nMint Address: ${mint.toString()}`);
