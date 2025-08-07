@@ -4,15 +4,16 @@ import { Connection, PublicKey } from "https://esm.sh/@solana/web3.js@1.73.3";
 import {
   createMint,
   getOrCreateAssociatedTokenAccount,
-  mintTo
+  mintTo,
 } from "https://esm.sh/@solana/spl-token@0.3.5";
 
 const connectBtn = document.getElementById("connectWallet");
 const deployBtn  = document.getElementById("deployToken");
 const statusDiv  = document.getElementById("status");
 
-// ← your founder address & supply settings
+// ← your founder address here
 const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC";
+// ← 1 billion tokens with 9 decimals
 const TOTAL_SUPPLY    = 1_000_000_000 * 10 ** 9;
 const FOUNDER_SUPPLY  = Math.floor(TOTAL_SUPPLY * 0.15);
 
@@ -20,6 +21,7 @@ let provider, walletPubkey;
 
 window.addEventListener("DOMContentLoaded", async () => {
   statusDiv.innerText = "Status: checking Phantom…";
+
   if (window.solana?.isPhantom) {
     provider = window.solana;
     statusDiv.innerText = "Status: Phantom detected";
@@ -41,28 +43,28 @@ window.addEventListener("DOMContentLoaded", async () => {
     deployBtn.addEventListener("click", async () => {
       statusDiv.innerText = "Status: deploying token…";
       try {
-        // ← YOUR QuickNode HTTPS RPC URL on mainnet:
+        // ← your QuickNode endpoint here
         const RPC_URL = "https://wiser-cool-arm.solana-mainnet.quiknode.pro/cdc6f37839abfb551f2c762094e0b05dcc5aa93a/";
         const conn    = new Connection(RPC_URL, "confirmed");
 
-        // 1) Create the mint
+        // 1) create the mint
         const mint = await createMint(
           conn,
           provider,          // payer
           walletPubkey,      // mint authority
-          null,              // no freeze authority
+          null,              // freeze authority
           9                  // decimals
         );
 
-        // 2) Founder’s associated token account
-        const ata = await getOrCreateAssociatedTokenAccount(
+        // 2) get founder ATA
+        const ata  = await getOrCreateAssociatedTokenAccount(
           conn,
           provider,
           mint,
           new PublicKey(FOUNDER_ADDRESS)
         );
 
-        // 3) Mint 15% to founder
+        // 3) mint 15% to founder
         await mintTo(
           conn,
           provider,
