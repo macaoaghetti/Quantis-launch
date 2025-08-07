@@ -1,35 +1,34 @@
 body {
-  background-color: #0a0a0a;
-  color: #00ff99;
-  font-family: monospace;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
+  background: #000;
+  color: #0ff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 2rem;
 }
 
 .container {
-  text-align: center;
+  max-width: 500px;
+  margin: auto;
 }
 
 .logo {
-  width: 120px;
-  margin-bottom: 20px;
+  width: 150px;
+  margin-bottom: 1rem;
 }
 
 button {
-  background-color: #00ff99;
-  color: black;
+  background: #0ff;
+  color: #000;
   border: none;
-  padding: 15px 30px;
-  font-size: 18px;
-  margin: 10px;
-  border-radius: 6px;
+  padding: 1rem 2rem;
+  margin: 1rem;
+  font-size: 1rem;
   cursor: pointer;
+  border-radius: 12px;
 }
 
-#status {
-  margin-top: 20px;
-  font-size: 16px;
+.status {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #fff;
 }
