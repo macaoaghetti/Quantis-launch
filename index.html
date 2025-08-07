@@ -16,19 +16,19 @@
     <div id="status" class="status">Status: Waiting for wallet connection...</div>
   </div>
 
-  <!-- ✅ LIVE DEPLOYMENT SCRIPT -->
+  <!-- ✅ FIXED DEPLOYMENT SCRIPT -->
   <script type="module">
     import {
       Connection,
       clusterApiUrl,
       PublicKey
-    } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/lib/index.iife.min.js";
+    } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/+esm";
 
     import {
       createMint,
       getOrCreateAssociatedTokenAccount,
       mintTo
-    } from "https://cdn.jsdelivr.net/npm/@solana/spl-token@0.3.5/lib/index.iife.min.js";
+    } from "https://cdn.jsdelivr.net/npm/@solana/spl-token@0.3.5/+esm";
 
     const connectButton = document.getElementById("connectWallet");
     const deployButton = document.getElementById("deployToken");
@@ -39,7 +39,7 @@
 
     const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC";
     const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9;
-    const FOUNDER_SUPPLY = TOTAL_SUPPLY * 0.15; // 15% to founder
+    const FOUNDER_SUPPLY = TOTAL_SUPPLY * 0.15;
 
     window.addEventListener("DOMContentLoaded", async () => {
       if (window.solana && window.solana.isPhantom) {
@@ -48,7 +48,7 @@
 
         connectButton.addEventListener("click", async () => {
           try {
-            const resp = await provider.connect({ onlyIfTrusted: false });
+            const resp = await provider.connect();
             wallet = resp.publicKey.toString();
             connectButton.innerText = "Connected: " + wallet.slice(0, 6) + "...";
             connectButton.disabled = true;
