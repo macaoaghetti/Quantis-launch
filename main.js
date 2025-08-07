@@ -1,9 +1,9 @@
-// ✅ QTX Token Launch - main.js (Browser-safe)
+// ✅ QTX Token Launch - main.js (Browser-safe & Final)
 import { Connection, clusterApiUrl, PublicKey } from "https://cdn.skypack.dev/@solana/web3.js";
 import {
   createMint,
   getOrCreateAssociatedTokenAccount,
-  mintTo,
+  mintTo
 } from "https://cdn.skypack.dev/@solana/spl-token";
 
 const connectButton = document.getElementById("connectWallet");
@@ -11,9 +11,8 @@ const deployButton = document.getElementById("deployToken");
 const statusDiv = document.getElementById("status");
 
 let provider = null;
-
 const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC";
-const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9; // 1 billion QTX with 9 decimals
+const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9;
 
 window.addEventListener("DOMContentLoaded", () => {
   if (window.solana && window.solana.isPhantom) {
@@ -22,8 +21,7 @@ window.addEventListener("DOMContentLoaded", () => {
     connectButton.addEventListener("click", async () => {
       try {
         const resp = await provider.connect();
-        const walletAddress = resp.publicKey.toString();
-        connectButton.innerText = "Connected: " + walletAddress.slice(0, 6) + "...";
+        connectButton.innerText = "Connected: " + resp.publicKey.toString().slice(0, 6) + "...";
         connectButton.disabled = true;
         deployButton.disabled = false;
         log("✅ Wallet connected");
@@ -44,7 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
           9
         );
 
-        const founderTokenAccount = await getOrCreateAssociatedTokenAccount(
+        const founderAccount = await getOrCreateAssociatedTokenAccount(
           connection,
           provider,
           mint,
@@ -55,7 +53,7 @@ window.addEventListener("DOMContentLoaded", () => {
           connection,
           provider,
           mint,
-          founderTokenAccount.address,
+          founderAccount.address,
           provider.publicKey,
           TOTAL_SUPPLY
         );
