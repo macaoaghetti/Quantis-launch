@@ -2,35 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>QTX Token Launch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quantis (QTX) Launch</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- ✅ Solana Web3.js -->
-  <script type="module">
-    import * as solanaWeb3 from 'https://cdn.skypack.dev/@solana/web3.js';
-    window.solanaWeb3 = solanaWeb3;
-  </script>
-
-  <!-- ✅ SPL-Token module -->
-  <script type="module">
-    import * as splToken from 'https://cdn.skypack.dev/@solana/spl-token';
-    window.splToken = splToken;
-  </script>
 </head>
 <body>
   <div class="container">
+    <!-- ✅ QTX LOGO -->
     <img src="qtx-logo.png" alt="QTX Logo" class="logo" />
-    <h1>QTX Token Launch</h1>
 
-    <!-- ✅ Wallet + Deploy buttons -->
-    <button id="connectWallet">Connect Wallet</button>
+    <h1>Quantis (QTX) Token Launch</h1>
+    <p>Deploy QTX on Solana Mainnet</p>
+
+    <button id="connectWallet">Connect Phantom Wallet</button>
     <button id="deployToken" disabled>Deploy QTX Token</button>
 
-    <!-- ✅ Status output -->
-    <div id="status"></div>
+    <div id="status" class="status">Status: Waiting for wallet connection...</div>
   </div>
 
-  <!-- ✅ Link to main logic -->
-  <script src="main.js" type="module"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
