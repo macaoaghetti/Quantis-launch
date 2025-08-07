@@ -1,5 +1,6 @@
 // main.js
-import { Connection, clusterApiUrl, PublicKey } from "https://esm.sh/@solana/web3.js@1.73.3";
+
+import { Connection, PublicKey } from "https://esm.sh/@solana/web3.js@1.73.3";
 import {
   createMint,
   getOrCreateAssociatedTokenAccount,
@@ -10,7 +11,7 @@ const connectBtn = document.getElementById("connectWallet");
 const deployBtn  = document.getElementById("deployToken");
 const statusDiv  = document.getElementById("status");
 
-// ← your founder address & amounts:
+// ← your founder address & supply settings
 const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC";
 const TOTAL_SUPPLY    = 1_000_000_000 * 10 ** 9;
 const FOUNDER_SUPPLY  = Math.floor(TOTAL_SUPPLY * 0.15);
@@ -40,11 +41,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     deployBtn.addEventListener("click", async () => {
       statusDiv.innerText = "Status: deploying token…";
       try {
-        // ← YOUR QuickNode HTTPS RPC URL here:
+        // ← YOUR QuickNode HTTPS RPC URL on mainnet:
         const RPC_URL = "https://wiser-cool-arm.solana-mainnet.quiknode.pro/cdc6f37839abfb551f2c762094e0b05dcc5aa93a/";
         const conn    = new Connection(RPC_URL, "confirmed");
 
-        // 1) CREATE the mint
+        // 1) Create the mint
         const mint = await createMint(
           conn,
           provider,          // payer
@@ -53,7 +54,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           9                  // decimals
         );
 
-        // 2) GET or CREATE the founder’s token account
+        // 2) Founder’s associated token account
         const ata = await getOrCreateAssociatedTokenAccount(
           conn,
           provider,
@@ -61,7 +62,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           new PublicKey(FOUNDER_ADDRESS)
         );
 
-        // 3) MINT 15% to founder
+        // 3) Mint 15% to founder
         await mintTo(
           conn,
           provider,
