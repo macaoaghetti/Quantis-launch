@@ -1,4 +1,4 @@
-// ✅ QTX Token Launch - main.js (Final Fixed & Clean)
+// ✅ QTX Token Launch - main.js (Browser-safe)
 import { Connection, clusterApiUrl, PublicKey } from "https://cdn.skypack.dev/@solana/web3.js";
 import {
   createMint,
@@ -10,24 +10,23 @@ const connectButton = document.getElementById("connectWallet");
 const deployButton = document.getElementById("deployToken");
 const statusDiv = document.getElementById("status");
 
-let wallet = null;
 let provider = null;
 
-const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC"; // Founder wallet
+const FOUNDER_ADDRESS = "CkvoeLNXgeGF99MbUu3YvUd19s5o94iG2Y77QdFitxUC";
 const TOTAL_SUPPLY = 1_000_000_000 * 10 ** 9; // 1 billion QTX with 9 decimals
 
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", () => {
   if (window.solana && window.solana.isPhantom) {
     provider = window.solana;
 
     connectButton.addEventListener("click", async () => {
       try {
         const resp = await provider.connect();
-        wallet = resp.publicKey.toString();
-        connectButton.innerText = "Connected: " + wallet.slice(0, 6) + "...";
+        const walletAddress = resp.publicKey.toString();
+        connectButton.innerText = "Connected: " + walletAddress.slice(0, 6) + "...";
         connectButton.disabled = true;
         deployButton.disabled = false;
-        log("✅ Wallet connected: " + wallet);
+        log("✅ Wallet connected");
       } catch (err) {
         log("❌ Wallet connection failed: " + err.message);
       }
@@ -61,7 +60,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           TOTAL_SUPPLY
         );
 
-        log(`✅ QTX Token Deployed Successfully: ${mint.toString()}`);
+        log(`✅ QTX Token Deployed: ${mint.toString()}`);
       } catch (err) {
         log("❌ Deployment failed: " + err.message);
         console.error(err);
