@@ -2,20 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Quantis (QTX) Launch</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background:#000; color:#0f0; font-family:monospace; text-align:center; padding:2rem; }
+    button { margin:1rem; padding:.5rem 1rem; font-size:1rem; }
+    #status { margin-top:2rem; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <img src="qtx-logo.png" alt="QTX Logo" class="logo" />
-    <h1>Quantis (QTX) Token Launch</h1>
-    <p>Deploy QTX on Solana Mainnet</p>
-    <button id="connectWallet" disabled>Connect Phantom Wallet</button>
-    <button id="deployToken"  disabled>Deploy QTX Token</button>
-    <div id="status">Status: Waiting…</div>
-  </div>
+  <h1>Quantis (QTX) Token Launch</h1>
+  <p>Deploy QTX on Solana Mainnet</p>
+  <button id="connectWallet" disabled>Connect Phantom Wallet</button>
+  <button id="deployToken"  disabled>Deploy QTX Token</button>
+  <div id="status">Status: Waiting…</div>
 
+  <!-- our logic as an ES module -->
   <script type="module" src="main.js"></script>
 </body>
 </html>
