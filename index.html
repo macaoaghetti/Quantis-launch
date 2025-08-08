@@ -16,7 +16,11 @@
     <div id="status">Status: Waiting…</div>
   </div>
 
-  <!-- ES module loader needs CORS header -->
-  <script type="module" src="main.js" crossorigin="anonymous"></script>
+  <!-- Note the crossorigin attribute so QuickNode’s CORS rules accept this module -->
+  <script
+    type="module"
+    crossorigin="anonymous"
+    src="main.js">
+  </script>
 </body>
 </html>
